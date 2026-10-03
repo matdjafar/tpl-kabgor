@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Galeri Karya MPI — Workshop Tim Pengembang Literasi Gorontalo</title>
+  <meta name="description" content="Galeri karya Multimedia Pembelajaran Interaktif (MPI) hasil Workshop Penyusunan MPI oleh Tim Pengembang Literasi di Aula Kemenag Kabupaten Gorontalo." />
+  <meta name="theme-color" content="#050816" />
+  
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('mpi-theme-v2');
+        if (!t) t = 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['Outfit', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            fg: 'rgba(var(--fg), <alpha-value>)',
+            fg2: 'rgba(var(--fg-2), <alpha-value>)',
+            muted: 'rgba(var(--muted), <alpha-value>)',
+            subtle: 'rgba(var(--subtle), <alpha-value>)',
+            base: 'rgba(var(--bg), <alpha-value>)',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="css/style.css?v=5" />
+</head>
+
+<body class="font-sans antialiased selection:bg-indigo-500/30">
+  <!-- Splash -->
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="relative grid place-items-center">
+      <span class="splash-ring"></span>
+      <img src="https://iili.io/nlnZRQp.png" alt="" class="splash-logo" width="84" height="84" />
+    </div>
+  </div>
+
+  <!-- Decor -->
+  <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <div class="app">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="mx-auto flex h-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <button type="button" data-go="home" class="flex min-w-0 items-center gap-3 text-left transition-transform hover:scale-105">
+          <img src="https://iili.io/nlnZRQp.png" alt="Logo" class="h-10 w-10 shrink-0 object-contain drop-shadow-md" width="40" height="40" />
+          <span class="min-w-0 leading-tight">
+            <span class="block truncate font-display text-sm font-bold tracking-wide" style="color: rgba(var(--fg), 1)">Tim Pengembang Literasi</span>
+            <span class="block truncate text-[11px] font-medium" style="color: rgba(var(--muted), 1)">Galeri Karya MPI · Gorontalo</span>
+          </span>
+        </button>
+
+        <nav class="tabs hidden md:flex" role="tablist">
+          <span class="tabs-indicator" aria-hidden="true"></span>
+          <button type="button" role="tab" class="tab" data-go="home" aria-controls="view-home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg> Beranda
+          </button>
+          <button type="button" role="tab" class="tab" data-go="insight" aria-controls="view-insight">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/></svg> Sebaran
+          </button>
+          <button type="button" role="tab" class="tab" data-go="gallery" aria-controls="view-gallery">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Galeri
+          </button>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <button type="button" id="themeToggle" class="icon-btn theme-toggle" aria-label="Ganti tema">
+            <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <!-- VIEW: BERANDA -->
+      <section id="view-home" class="view is-active" data-view="home">
+        <div class="view-inner fit-screen">
+          <div class="home-grid">
+            
+            <!-- Left: Hero -->
+            <div class="home-left">
+              <div class="anim flex items-center gap-3" style="--i:0">
+                <span class="eyebrow"><span class="pulse-dot"></span>Tim Pengembang Literasi Gorontalo</span>
+              </div>
+              <h1 class="anim hero-title" style="--i:1">
+                Galeri Karya <span class="text-gradient">Multimedia Pembelajaran Interaktif</span>
+              </h1>
+              <p class="anim hero-sub" style="--i:2">
+                Kumpulan karya MPI hasil workshop guru MI, MTs, dan MA se-Kabupaten Gorontalo dan Gorontalo Utara. Menjelajahi masa depan pendidikan digital.
+              </p>
+
+              <div class="anim stats-grid" style="--i:3">
+                <div class="stat-card glass" style="--c:#6366f1;--c2:#22d3ee">
+                  <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8M12 18v4"/><path d="m10 8 5 3-5 3z"/></svg></div>
+                  <div><span class="stat-num" id="statKarya">0</span><span class="stat-label">Karya MPI</span></div>
+                </div>
+                <div class="stat-card glass" style="--c:#d946ef;--c2:#f472b6">
+                  <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                  <div><span class="stat-num" id="statGuru">0</span><span class="stat-label">Guru</span></div>
+                </div>
+                <div class="stat-card glass" style="--c:#10b981;--c2:#84cc16">
+                  <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/></svg></div>
+                  <div><span class="stat-num" id="statMadrasah">0</span><span class="stat-label">Madrasah</span></div>
+                </div>
+                <div class="stat-card glass" style="--c:#f59e0b;--c2:#ef4444">
+                  <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+                  <div><span class="stat-num" id="statFase">0</span><span class="stat-label">Fase</span></div>
+                </div>
+              </div>
+
+              <div class="anim flex flex-wrap gap-4" style="--i:4">
+                <button type="button" data-go="gallery" class="btn-primary btn-lg">
+                  Jelajahi Galeri
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+                <button type="button" data-go="insight" class="btn-ghost btn-lg">
+                  Lihat Analitik Sebaran
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Custom Showcase (Visualisasi) -->
+            <div class="anim showcase-panel" style="--i:2">
+              <div class="sc-header">
+                <div class="flex items-center gap-2">
+                  <span class="live-badge"><i></i>Sorotan</span>
+                  <span class="text-xs text-muted font-medium">Tampil Bergantian</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <button type="button" id="scPrev" class="icon-btn !h-8 !w-8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                  <span id="scCounter" class="text-xs font-bold tabular-nums text-fg mx-1">1/5</span>
+                  <button type="button" id="scNext" class="icon-btn !h-8 !w-8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+                </div>
+              </div>
+
+              <div class="sc-stage" id="scStage">
+                <!-- Layers toggled by JS -->
+                <div class="sc-layer is-active" id="scLayer0"></div>
+                <div class="sc-layer" id="scLayer1"></div>
+              </div>
+
+              <div class="sc-progress">
+                <div class="sc-thumbs" id="scThumbs"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: SEBARAN -->
+      <section id="view-insight" class="view" data-view="insight">
+        <div class="view-inner fit-screen flex flex-col gap-5">
+          <div class="anim flex flex-wrap items-end justify-between gap-3" style="--i:0">
+            <div>
+              <p class="kicker">Analitik</p>
+              <h2 class="section-title">Sebaran Karya Peserta</h2>
+            </div>
+            <p class="max-w-sm text-sm text-muted">Klik pada grafik fase atau mapel untuk menyaring karya di galeri secara langsung.</p>
+          </div>
+
+          <div class="insight-grid">
+            <article class="panel glass anim p-fase" style="--i:1">
+              <div class="panel-head">
+                <h3 class="panel-title">Fase Pembelajaran</h3>
+                <span class="text-[10px] uppercase font-bold text-subtle tracking-wider">A—F</span>
+              </div>
+              <div id="faseBars" class="fase-list"></div>
+            </article>
+
+            <article class="panel glass anim p-jenjang" style="--i:2">
+              <div class="panel-head"><h3 class="panel-title">Jenjang Madrasah</h3></div>
+              <div class="flex min-h-0 flex-1 items-center gap-6">
+                <div class="donut-wrap">
+                  <svg class="donut" id="jenjangDonut" viewBox="0 0 120 120"></svg>
+                  <div class="donut-center"><span class="font-display text-3xl font-bold text-fg" id="donutTotal">0</span><span class="text-[9px] uppercase tracking-wider text-subtle font-bold">Karya</span></div>
+                </div>
+                <ul id="jenjangLegend" class="min-w-0 flex-1 space-y-3"></ul>
+              </div>
+            </article>
+
+            <article class="panel glass anim p-kab" style="--i:3">
+              <div class="panel-head"><h3 class="panel-title">Wilayah</h3></div>
+              <div id="kabPanel" class="flex min-h-0 flex-1 flex-col justify-center gap-4"></div>
+            </article>
+
+            <article class="panel glass anim p-mapel" style="--i:4">
+              <div class="panel-head">
+                <h3 class="panel-title">Mata Pelajaran</h3>
+                <span class="text-xs font-medium text-subtle"><span id="mapelCount">0</span> Mapel</span>
+              </div>
+              <div id="mapelChips" class="chips-wrap"></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: GALERI -->
+      <section id="view-gallery" class="view" data-view="gallery">
+        <div class="view-inner is-fixed flex flex-col gap-4">
+          <div class="gal-toolbar anim" style="--i:0">
+            <div class="mr-auto min-w-0">
+              <p class="kicker">Eksplorasi</p>
+              <h2 class="section-title !text-2xl">Galeri Karya</h2>
+            </div>
+
+            <div class="search-box">
+              <svg class="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-subtle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="searchInput" type="search" autocomplete="off" class="field !pl-10 !pr-10" placeholder="Cari karya, guru, atau madrasah..." />
+              <button type="button" id="searchClear" class="icon-btn absolute right-1 top-1/2 hidden !h-7 !w-7 -translate-y-1/2 !border-0 text-subtle hover:text-fg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <button type="button" id="filterToggle" class="btn-ghost xl:!hidden">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+              Filter <span id="filterBadge" class="count-badge hidden">0</span>
+            </button>
+
+            <div id="filterPanel" class="filter-panel">
+              <select id="filterMapel" class="field"><option value="">Semua Mapel</option></select>
+              <select id="filterFase" class="field"><option value="">Semua Fase</option></select>
+              <select id="filterJenjang" class="field"><option value="">Semua Jenjang</option></select>
+              <select id="filterKab" class="field"><option value="">Semua Kabupaten</option></select>
+            </div>
+
+            <button type="button" id="resetBtn" class="btn-ghost" title="Reset filter">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+          </div>
+
+          <div id="activeFilters" class="active-row hidden"></div>
+
+          <div id="gridViewport" class="grid-viewport">
+            <div id="cardGrid" class="card-grid"></div>
+            <div id="emptyState" class="empty-state hidden">
+              <div class="text-4xl mb-4 opacity-50">🔍</div>
+              <h3 class="font-display text-xl font-bold text-fg">Tidak ada hasil</h3>
+              <p class="mt-2 text-sm text-muted max-w-sm">Coba sesuaikan kata pencarian atau bersihkan filter yang aktif.</p>
+              <button type="button" id="emptyReset" class="btn-primary mt-6">Hapus Semua Filter</button>
+            </div>
+          </div>
+
+          <div class="gal-footer anim" style="--i:2">
+            <p class="text-sm font-medium text-muted">
+              Menampilkan <b id="rangeText" class="text-fg">0</b> dari <b id="resultCount" class="text-fg">0</b>
+            </p>
+            <div class="flex items-center gap-4">
+              <select id="sortSelect" class="field field-sm hidden sm:block !w-auto">
+                <option value="default">Terbaru Masuk</option>
+                <option value="judul">A-Z Judul</option>
+                <option value="nama">A-Z Guru</option>
+                <option value="sekolah">A-Z Sekolah</option>
+              </select>
+              <nav class="pager" id="pager"></nav>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Nav -->
+    <nav class="bottom-nav">
+      <button type="button" class="bnav-item" data-go="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg> Beranda</button>
+      <button type="button" class="bnav-item" data-go="insight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/></svg> Sebaran</button>
+      <button type="button" class="bnav-item" data-go="gallery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Galeri</button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="previewModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel">
+      <header class="flex flex-col gap-3 border-b px-5 py-4 sm:flex-row sm:items-center sm:justify-between" style="border-color:var(--glass-border)">
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2 mb-1" id="modalBadges"></div>
+          <h2 id="modalTitle" class="truncate font-display text-lg font-bold text-fg sm:text-xl">Pratinjau</h2>
+          <p id="modalMeta" class="truncate text-xs font-medium text-muted"></p>
+        </div>
+        <div class="flex shrink-0 items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+          <div class="device-group hidden md:flex mr-2">
+            <button class="icon-btn !h-8 !w-8" data-device="desktop" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></button>
+            <button class="icon-btn !h-8 !w-8" data-device="tablet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></svg></button>
+            <button class="icon-btn !h-8 !w-8" data-device="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/></svg></button>
+          </div>
+          <button id="modalPrev" class="icon-btn !h-9 !w-9 bg-muted/10"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+          <button id="modalNext" class="icon-btn !h-9 !w-9 bg-muted/10 mr-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+          
+          <a id="modalOpen" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary !h-9 !px-4 text-xs">
+            Buka Tab Baru <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          </a>
+          <button id="modalClose" class="icon-btn !h-9 !w-9 ml-1" data-close><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+      </header>
+
+      <div class="modal__stage">
+        <div class="frame-wrap" id="frameWrap" data-device="desktop">
+          <div class="frame-loader" id="frameLoader">
+            <span class="spinner"></span>
+            <p class="text-sm font-semibold mt-4">Memuat karya...</p>
+          </div>
+          <iframe id="previewFrame" allow="fullscreen; autoplay; clipboard-write; microphone; camera" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
