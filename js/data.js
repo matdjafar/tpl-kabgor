@@ -277,7 +277,7 @@ window.MPI_DATA = [
     "judul": "Mengenal Nama-nama Hewan",
     "sekolah": "MIS Muhammadiyah Iloponu",
     "fase": "Fase B",
-    "link": "[https://uswatunhasan70-ops.github.io/BAHASAARAB/](https://uswatunhasan70-ops.github.io/BAHASAARAB/)"
+    "link": "[https://uswatunhasan70-ops.github.io/Bahasa-Arab/](https://uswatunhasan70-ops.github.io/Bahasa-Arab/)"
   },
   {
     "nama": "Suci Noor Ariyanti Utomo, S.Pd",
