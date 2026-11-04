@@ -45,9 +45,10 @@
    * ------------------------------------------------------------------- */
   const MAPEL_STYLE = {
     'Bahasa Indonesia': { hue: 4, icon: '📖' }, 'Pendidikan Pancasila': { hue: 340, icon: '🦅' }, 'SKI': { hue: 24, icon: '📜' },
-    'Sejarah': { hue: 38, icon: '🏺' }, 'IPS Terpadu': { hue: 50, icon: '🌦️' }, 'IPS': { hue: 64, icon: '🌏' },
-    'IPAS': { hue: 92, icon: '🌱' }, "Al-Qur'an Hadits": { hue: 128, icon: '📗' }, 'Fikih': { hue: 152, icon: '🤲' },
-    'IPA': { hue: 172, icon: '🔬' }, 'Bahasa Arab': { hue: 186, icon: '🔤' }, 'Fisika': { hue: 198, icon: '📏' },
+    'Sosiologi': { hue: 30, icon: '👥' }, 'Sejarah': { hue: 38, icon: '🏺' }, 'IPS Terpadu': { hue: 50, icon: '🌦️' }, 'IPS': { hue: 64, icon: '🌏' },
+    'IPAS': { hue: 92, icon: '🌱' }, "Al-Qur'an Hadits": { hue: 128, icon: '📗' }, 'PJOK': { hue: 142, icon: '⚽' },
+    'Fikih': { hue: 152, icon: '🤲' }, 'IPA': { hue: 172, icon: '🔬' }, 'IPA Terpadu': { hue: 172, icon: '🔬' },
+    'Bahasa Arab': { hue: 186, icon: '🔤' }, 'Fisika': { hue: 198, icon: '📏' },
     'Bahasa Inggris': { hue: 212, icon: '🗣️' }, 'Matematika': { hue: 228, icon: '➗' }, 'Informatika': { hue: 245, icon: '💻' },
     'Guru Kelas': { hue: 262, icon: '🏫' }, 'Akidah Akhlak': { hue: 282, icon: '🌙' }, 'Seni Budaya': { hue: 302, icon: '🎵' },
     'Bimbingan Dan Konseling': { hue: 322, icon: '🤝' },
@@ -66,6 +67,18 @@
   const OVERRIDE = window.MPI_KABUPATEN_OVERRIDE || {};
   const RAW = Array.isArray(window.MPI_DATA) ? window.MPI_DATA : [];
 
+  const kabOf = (school) => {
+    const s = String(school || '').trim();
+    if (OVERRIDE[s]) return OVERRIDE[s];
+    const u = s.toUpperCase();
+    if (/BOALEMO|TILAMUTA/.test(u)) return 'Kab. Boalemo';
+    if (/POHUWATO|PAGUAT|MARISA|BUNTULIA|SALAFIYAH\s+SYAFI/.test(u)) return 'Kab. Pohuwato';
+    if (/BONE\s+BOLANGO|HUBULO/.test(u)) return 'Kab. Bone Bolango';
+    if (/UTARA|GORUT|\bTOLANGO\b|DAMBALO/.test(u)) return 'Gorontalo Utara';
+    if (/KOTA|SMART|UNGGULAN|AL\s*HUDA|MTS\s+NEGERI\s+1\s+GORONTALO\b/.test(u)) return 'Kota Gorontalo';
+    return 'Kab. Gorontalo';
+  };
+
   const DATA = RAW.map((d, i) => {
     const canon = schoolCanonical(d.sekolah);
     const fase = String(d.fase || '').trim().replace(/^fase\s*/i, 'Fase ').replace(/\s+([a-f])$/i, (m, l) => ' ' + l.toUpperCase());
@@ -79,9 +92,11 @@
       fase, url: parseLink(d.link),
       schoolKey: canon.replace(/\s+/g, ''),
       jenjang: jenjangOf(canon),
-      kab: OVERRIDE[d.sekolah] || (/UTARA/.test(canon) ? 'Gorontalo Utara' : 'Kab. Gorontalo'),
+      kab: d.kab || kabOf(d.sekolah),
+      sheet: parseLink(d.sheet || ''),
+      siswa: Number(d.siswa || 0),
     };
-    item.haystack = [item.nama, item.judul, item.judulTampil, item.sekolah].join(' ').toLowerCase();
+    item.haystack = [item.nama, item.judul, item.judulTampil, item.sekolah, item.kab, item.mapel, item.fase].join(' ').toLowerCase();
     return item;
   });
 
@@ -163,6 +178,8 @@
     guru: new Set(DATA.map(d => personKey(d.nama))).size,
     madrasah: new Set(DATA.map(d => d.schoolKey)).size,
     fase: new Set(DATA.map(d => d.fase).filter(f => FASE_ORDER.includes(f))).size,
+    wilayah: new Set(DATA.map(d => d.kab)).size,
+    siswa: DATA.reduce((sum, d) => sum + (d.siswa || 0), 0)
   };
   
   const countUp = (node, target, duration = 1400) => {
@@ -180,7 +197,8 @@
     countUp($('#statKarya'), statsData.karya);
     countUp($('#statGuru'), statsData.guru);
     countUp($('#statMadrasah'), statsData.madrasah);
-    countUp($('#statFase'), statsData.fase);
+    if ($('#statWilayah')) countUp($('#statWilayah'), statsData.wilayah);
+    if ($('#statFase')) countUp($('#statFase'), statsData.fase);
   }
 
   /* ---------------------------------------------------------------------
@@ -379,15 +397,29 @@
       `).join('');
     }
 
-    // Kab
+    // Kab / Wilayah
+    const KAB_ORDER = ['Kota Gorontalo', 'Kab. Gorontalo', 'Gorontalo Utara', 'Kab. Boalemo', 'Kab. Pohuwato', 'Kab. Bone Bolango'];
+    const KAB_HUES = {
+      'Kota Gorontalo': 160,
+      'Kab. Gorontalo': 215,
+      'Gorontalo Utara': 190,
+      'Kab. Boalemo': 40,
+      'Kab. Pohuwato': 280,
+      'Kab. Bone Bolango': 335,
+    };
     const kabCounts = countBy('kab');
+    const sortedKabs = [...kabCounts.entries()].sort((a, b) => {
+      const ia = KAB_ORDER.indexOf(a[0]);
+      const ib = KAB_ORDER.indexOf(b[0]);
+      return (ia !== -1 ? ia : 99) - (ib !== -1 ? ib : 99);
+    });
     const kMax = Math.max(...kabCounts.values(), 1);
     if ($('#kabPanel')) {
-      $('#kabPanel').innerHTML = [...kabCounts.entries()].map(([k, v]) => `
-        <div class="bar-item" data-go="gallery" data-kab="${esc(k)}" style="--h:190">
+      $('#kabPanel').innerHTML = sortedKabs.map(([k, v]) => `
+        <div class="bar-item" data-go="gallery" data-kab="${esc(k)}" style="--h:${KAB_HUES[k] ?? 200}">
           <div class="bar-header">
             <div><span class="bar-title">${esc(k)}</span></div>
-            <span class="bar-val">${v}</span>
+            <span class="bar-val font-bold">${v} <span class="text-[11px] font-normal opacity-70">karya</span></span>
           </div>
           <div class="bar-track"><span class="bar-fill" style="width:${(v/kMax)*100}%"></span></div>
         </div>
@@ -446,7 +478,13 @@
     build(el.selects.mapel, 'Semua Mapel', [...m.entries()].sort((a, b) => collator.compare(a[0], b[0])));
     build(el.selects.fase, 'Semua Fase', [...f.entries()].sort((a, b) => faseIndex(a[0]) - faseIndex(b[0])));
     build(el.selects.jenjang, 'Semua Jenjang', ['MI', 'MTs', 'MA', 'Lainnya'].filter((x) => j.has(x)).map((x) => [x, j.get(x)]));
-    build(el.selects.kab, 'Semua Kabupaten', ['Kab. Gorontalo', 'Gorontalo Utara'].filter((x) => k.has(x)).map((x) => [x, k.get(x)]));
+    const KAB_ORDER = ['Kota Gorontalo', 'Kab. Gorontalo', 'Gorontalo Utara', 'Kab. Boalemo', 'Kab. Pohuwato', 'Kab. Bone Bolango'];
+    const sortedKabEntries = [...k.entries()].sort((a, b) => {
+      const ia = KAB_ORDER.indexOf(a[0]);
+      const ib = KAB_ORDER.indexOf(b[0]);
+      return (ia !== -1 ? ia : 99) - (ib !== -1 ? ib : 99);
+    });
+    build(el.selects.kab, 'Semua Kab / Kota', sortedKabEntries);
   };
 
   const tokens = () => state.filter.q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -503,6 +541,7 @@
             <div class="m-tags">
               <span class="m-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/></svg>${esc(d.jenjang)}</span>
               <span class="m-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>${esc(d.kab)}</span>
+              ${d.siswa ? `<span class="m-tag !border-emerald-500/40 !text-emerald-400 font-semibold" title="${d.siswa} siswa telah memanfaatkan MPI ini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="w-3 h-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>${d.siswa} Siswa</span>` : ''}
             </div>
             <div class="m-actions">
               <button type="button" class="btn-ghost" data-preview="${d.id}">
@@ -522,7 +561,7 @@
   const renderActiveFilters = () => {
     if (!el.active) return;
     const f = state.filter;
-    const FILTER_LABEL = { mapel: 'Mapel', fase: 'Fase', jenjang: 'Jenjang', kab: 'Kab.' };
+    const FILTER_LABEL = { mapel: 'Mapel', fase: 'Fase', jenjang: 'Jenjang', kab: 'Wilayah' };
     const items = [];
     if (f.q.trim()) items.push(['q', `“${f.q.trim()}”`]);
     Object.keys(FILTER_LABEL).forEach((k) => { if (f[k]) items.push([k, `${FILTER_LABEL[k]}: ${f[k]}`]); });
@@ -638,7 +677,7 @@
    * ------------------------------------------------------------------- */
   const modal = {
     root: $('#previewModal'),
-    panel: $('#modalPanel'),
+    panel: $('.modal__panel'),
     title: $('#modalTitle'),
     meta: $('#modalMeta'),
     badges: $('#modalBadges'),
@@ -647,6 +686,7 @@
     loader: $('#frameLoader'),
     slow: $('#frameSlowHint'),
     open: $('#modalOpen'),
+    sheet: $('#modalSheet'),
     prev: $('#modalPrev'),
     next: $('#modalNext'),
     pos: $('#modalPos'),
@@ -674,14 +714,24 @@
     modal.badges.innerHTML =
       `<span class="badge-mapel !static !transform-none !shadow-none !px-2" style="--h:${st.hue}">${st.icon} ${esc(d.mapel)}</span>` +
       `<span class="badge-fase !static !transform-none" style="--fh:${FASE_HUE[d.fase] ?? 200}">${esc(d.fase)}</span>` +
-      `<span class="m-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/></svg>${esc(d.jenjang)}</span>`;
+      `<span class="m-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/></svg>${esc(d.jenjang)}</span>` +
+      `<span class="m-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>${esc(d.kab)}</span>` +
+      (d.siswa ? `<span class="m-tag !border-emerald-500/40 !text-emerald-400 font-semibold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3 h-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>${d.siswa} Responden Siswa</span>` : '');
     modal.title.textContent = d.judulTampil;
     modal.title.title = d.judulTampil;
-    modal.meta.textContent = `${d.nama} — ${d.sekolah}`;
+    modal.meta.textContent = `${d.nama} — ${d.sekolah} (${d.kab})`;
     modal.open.href = d.url;
-    modal.pos.textContent = `${index + 1} / ${modal.list.length}`;
-    modal.prev.disabled = index <= 0;
-    modal.next.disabled = index >= modal.list.length - 1;
+    if (modal.sheet) {
+      if (d.sheet && d.sheet !== '#') {
+        modal.sheet.href = d.sheet;
+        modal.sheet.classList.remove('hidden');
+      } else {
+        modal.sheet.classList.add('hidden');
+      }
+    }
+    if (modal.pos) modal.pos.textContent = `${index + 1} / ${modal.list.length}`;
+    if (modal.prev) modal.prev.disabled = index <= 0;
+    if (modal.next) modal.next.disabled = index >= modal.list.length - 1;
     loadFrame(d.url);
   };
 

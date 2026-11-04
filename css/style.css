@@ -252,6 +252,8 @@ select.field { appearance: none; padding-right: 2.5rem; cursor: pointer; backgro
 /* Progress Bars */
 .fase-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .bar-item { display: flex; flex-direction: column; gap: 0.4rem; padding: 0.6rem 0.85rem; border-radius: 0.85rem; transition: background .2s, transform .2s; cursor: pointer; border: 1px solid transparent; }
+.p-kab .bar-item { padding: 0.45rem 0.75rem; gap: 0.25rem; }
+.p-kab .bar-val { font-size: 0.95rem; }
 .bar-item:hover { background: rgba(var(--muted), .05); transform: translateY(-2px); border-color: rgba(var(--muted), .1); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
 .bar-header { display: flex; justify-content: space-between; align-items: flex-end; }
 .bar-title { display: block; font-size: 0.85rem; font-weight: 700; color: rgb(var(--fg)); line-height: 1.1; }
